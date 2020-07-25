@@ -1,0 +1,32 @@
+sudo: required
+dist: trusty
+
+language: node_js
+node:
+  - 12
+
+if: branch = master
+
+jobs:
+  include:
+    - name: "macOS"
+      os: osx
+      osx_image: "xcode11.3"
+      script:
+        - electron-builder --publish=onTagOrDraft
+
+    - name: "Windows"
+      os: osx
+      osx_image: "xcode11.3"
+      script:
+        - electron-builder -w --ia32 --x64 --publish=onTagOrDraft
+
+cache:
+  directories:
+    - node_modules
+
+install:
+  - npm install
+
+notifications:
+  email: false
