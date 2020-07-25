@@ -1,66 +1,59 @@
 {
-  "name": "chunk-generator",
-  "version": "1.0.0",
-  "description": "Seamlessly generates chunks for the Bedrock Edition of Minecraft using a WebSocket server",
-  "main": "index.js",
-  "scripts": {
-    "start": "./node_modules/.bin/electron ."
-  },
-  "build": {
-    "appId": "chunk-generator",
-    "productName": "Chunk Generator",
-    "artifactName": "${productName}_${arch}_${version}.${ext}",
-    "publish": [
-        {
-            "provider": "github"
-        }
-    ],
-    "mac": {
-        "category": "macOS.application",
-        "hardenedRuntime": true,
-        "entitlements": "build/entitlements.mac.plist",
-        "entitlementsInherit": "build/entitlements.mac.plist"
+    "name": "chunk-generator",
+    "version": "1.0.0",
+    "description": "Seamlessly generates chunks for the Bedrock Edition of Minecraft using a WebSocket server",
+    "main": "index.js",
+    "scripts": {
+        "start": "./node_modules/.bin/electron ."
     },
-    "files": [
-        "css/",
-        "src",
-        "index.js",
-        "index.html",
-        "package.json",
-        "favicon.png",
-        "icon.icns",
-        "icon.ico",
-        "icon.png"
-    ],
-    "dmg": {
-        "artifactName": "${productName}_${version}.${ext}",
-        "window": {
-            "x": 200,
-            "y": 100,
-            "width": 440,
-            "height": 220
-        },
-        "contents": [
-            {
-                "x": 130,
-                "y": 120
-            },
-            {
-                "x": 360,
-                "y": 120,
-                "type": "link",
-                "path": "/Applications"
-            }
-        ]
-    },
-    "win": {
+    "build": {
+        "appId": "chunk-generator",
+        "productName": "Chunk Generator",
         "artifactName": "${productName}_${arch}_${version}.${ext}",
-        "target": "nsis"
+        "publish": [{
+            "provider": "github"
+        }],
+        "mac": {
+            "category": "macOS.application",
+            "hardenedRuntime": true,
+            "entitlements": "build/entitlements.mac.plist",
+            "entitlementsInherit": "build/entitlements.mac.plist"
+        },
+        "files": [
+            "css/",
+            "src",
+            "index.js",
+            "index.html"
+        ],
+        "dmg": {
+            "artifactName": "${productName}_${version}.${ext}",
+            "window": {
+                "x": 200,
+                "y": 100,
+                "width": 440,
+                "height": 220
+            },
+            "contents": [{
+                    "x": 130,
+                    "y": 120
+                },
+                {
+                    "x": 360,
+                    "y": 120,
+                    "type": "link",
+                    "path": "/Applications"
+                }
+            ]
+        },
+        "win": {
+            "artifactName": "${productName}_${arch}_${version}.${ext}",
+            "target": "nsis"
+        }
+    },
+    "author": "Wither",
+    "license": "MIT",
+    "devDependencies": {
+        "electron": "^9.1.1",
+        "electron-builder": "^21.2.0"
     }
-},
-  "author": "Wither",
-  "license": "MIT",
-  "devDependencies": {
-    "electron": "^9.1.1"
-  }
 }
