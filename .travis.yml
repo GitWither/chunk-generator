@@ -20,6 +20,7 @@ jobs:
       osx_image: "xcode11.3"
       script:
         - electron-builder -w --ia32 --x64 --publish=onTagOrDraft
+        - electron-builder --windows portable --x64 --publish=onTagOrDraft -c.productName='ChunkGenerator_portable'
 
 cache:
   directories:

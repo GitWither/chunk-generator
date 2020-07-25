@@ -4,6 +4,7 @@
     "description": "Seamlessly generates chunks for the Bedrock Edition of Minecraft using a WebSocket server",
     "main": "index.js",
     "repository": {
+        "type": "git",
         "url": "https://github.com/GitWither/chunk-generator"
     },
     "scripts": {
