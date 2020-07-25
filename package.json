@@ -3,8 +3,11 @@
     "version": "1.0.0",
     "description": "Seamlessly generates chunks for the Bedrock Edition of Minecraft using a WebSocket server",
     "main": "index.js",
+    "repository": {
+        "url": "https://github.com/GitWither/chunk-generator"
+    },
     "scripts": {
-        "start": "./node_modules/.bin/electron ."
+        "start": "electron ."
     },
     "build": {
         "appId": "chunk-generator",

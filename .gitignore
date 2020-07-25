@@ -1,4 +1,4 @@
-/distribution/
+/dist/
 electron-builder.env
 node_modules/
 .vscode/
