@@ -2,3 +2,4 @@
 electron-builder.env
 node_modules/
 .vscode/
+chunk-generator.code-workspace
