@@ -1,0 +1,144 @@
+body {
+    margin: 0;
+    background-color: #1f2225;
+    overflow: hidden;
+}
+
+.text {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: white;
+}
+
+
+.input {
+    width: 9.7rem;
+    display: block;
+    height: 2rem;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #42484e;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #c3c9cf;
+    border-top-right-radius: .25rem;
+    border-bottom-right-radius: .25rem;
+    border-top-left-radius: .25rem;
+    border-bottom-left-radius: .25rem;
+    text-rendering: auto;
+    letter-spacing: normal;
+    word-spacing: normal;
+    text-transform: none;
+    text-indent: 0px;
+    text-shadow: none; 
+    outline: none;
+}
+
+button {
+    color: white;
+    display: inline-block;
+    font-weight: 400;
+    text-align: center;
+    vertical-align: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    border: 1px solid transparent;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: .25rem;
+    outline: none;
+}
+
+.green-button {
+    background-color: #1fb943;
+}
+
+.green-button:hover {
+    background-color: #1d7732;
+}
+
+.red-button {
+    background-color: #ca1818;
+}
+
+.red-button:hover {
+    background-color: #aa1616;
+}
+
+.blue-button {
+    background-color: #1898ca;
+}
+
+.blue-button:hover {
+    background-color: #1680aa;
+}
+
+nav {
+    display: flex;
+    align-items: baseline;
+    background-color: #2e3338;
+    color: white;
+    padding: .5rem 1rem;
+}
+
+.option {
+    margin-top: .6rem;
+    margin-bottom: .6rem;
+    margin-right: .3rem;
+}
+
+.sub-option {
+    padding-left: 2.5rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.settings {
+    width: 30rem;
+    border: 1px solid transparent;
+    padding: .375rem .75rem;
+    padding-right: 2.5rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: .25rem;
+    margin:.5rem;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.vector {
+    display: flex;
+    flex-direction: row;
+}
+
+.crop-block {
+    background-color: #1fb943;
+    border: 1px solid transparent;
+    padding: .375rem .75rem;
+    padding-right: 2.5rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: .25rem;
+    margin:.5rem;
+}
+
+.header-text {
+    margin: .5rem 1rem;
+}
+
+#settings-container {
+    display: flex;
+    justify-content: center;
+}
+
+textarea {
+    resize: none;
+    width: 100%;
+    height: 15rem;
+    outline: none;
+}

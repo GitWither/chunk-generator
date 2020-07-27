@@ -3,20 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <title>Chunk Generator</title>
-    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
+    <link rel="stylesheet" type="text/css" href="css/main.css">
 </head>
 
 <body>
-    <h1>Hello World!</h1>
-    We are using node <script>
-        document.write(process.versions.node)
-    </script>,
-    Chrome <script>
-        document.write(process.versions.chrome)
-    </script>,
-    and Electron <script>
-        document.write(process.versions.electron)
-    </script>.
+    <div class="settings" id="settings" style="display: flex;">
+        <div class="vector">
+            <div class="option">
+                <label class="text">Center X:</label>
+                <input class="input" type="number" id="center-x">
+            </div>
+            <div class="option">
+                <label class="text">Center Y:</label>
+                <input class="input" type="number" id="center-y">
+            </div>
+            <div class="option">
+                <label class="text">Center Z:</label>
+                <input class="input" type="number" id="center-z">
+            </div>
+        </div>
+        <div class="vector">
+            <div class="option">
+                <label class="text">Dimensions X:</label>
+                <input class="input" type="number" id="dimensions-x">
+            </div>
+            <div class="option">
+                <label class="text">Dimensions Z:</label>
+                <input class="input" type="number" id="dimensions-z">
+            </div>
+        </div>
+        <button class="green-button option" onclick="beginGeneration()">Begin Generation</button>
+        <button class="red-button option" onclick="beginGeneration()">Stop Generation</button>
+    </div>
+    <script src="src/main.js"></script>
 </body>
 
 </html>

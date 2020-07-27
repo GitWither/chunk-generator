@@ -14,9 +14,11 @@
         "appId": "chunk-generator",
         "productName": "Chunk Generator",
         "artifactName": "${productName}_${arch}_${version}.${ext}",
-        "publish": [{
-            "provider": "github"
-        }],
+        "publish": [
+            {
+                "provider": "github"
+            }
+        ],
         "mac": {
             "category": "macOS.application",
             "hardenedRuntime": true,
@@ -37,7 +39,8 @@
                 "width": 440,
                 "height": 220
             },
-            "contents": [{
+            "contents": [
+                {
                     "x": 130,
                     "y": 120
                 },
@@ -59,5 +62,11 @@
     "devDependencies": {
         "electron": "^9.1.1",
         "electron-builder": "^21.2.0"
+    },
+    "dependencies": {
+        "express": "^4.17.1",
+        "jquery": "^3.5.1",
+        "uuid": "^8.2.0",
+        "ws": "^7.3.1"
     }
 }
