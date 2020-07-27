@@ -3,9 +3,9 @@ const {app, BrowserWindow} = require('electron');
 function createWindow() {
     const window = new BrowserWindow({
         width: 525,
-        height: 320,
-        resizable: false,
-        fullscreenable: false,
+        height: 360,
+        //resizable: false,
+        //fullscreenable: false,
         webPreferences: {
             nodeIntegration: true
         }
@@ -13,7 +13,7 @@ function createWindow() {
     
     window.loadFile("index.html");
     
-    //window.webContents.openDevTools();
+    window.webContents.openDevTools();
 
     window.removeMenu();
 }
