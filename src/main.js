@@ -7,16 +7,19 @@ const {
 const $ = require('jquery');
 const { start } = require('repl');
 const electorn = require('electron').remote;
+const ip = require('ip');
 
 const currentWindow = electorn.getCurrentWindow();
 
 const durationTemplate = 'This generation will take approximately: %s hour(s)';
 
+const intervalSeconds = 4;
+
 var canGenerate = false;
 var generating = false;
 
-function teleportPlayer(newPos) {
-    return JSON.stringify({
+function teleportPlayer(client, newPos) {
+    client.send(JSON.stringify({
         "body": {
             "origin": {
                 "type": "player"
@@ -30,16 +33,16 @@ function teleportPlayer(newPos) {
             "version": 1,
             "messageType": "commandRequest"
         }
-    });
+    }));
 }
 
-function sendFormattedMessage(message) {
-    return JSON.stringify({
+function sendFormattedMessage(client, message) {
+    client.send(JSON.stringify({
         "body": {
             "origin": {
                 "type": "player"
             },
-            "commandLine": `tellraw @a ${JSON.stringify(message)}`,
+            "commandLine": `tellraw @a ${JSON.stringify({rawtext: [message]})}`,
             "version": 1
         },
         "header": {
@@ -48,21 +51,21 @@ function sendFormattedMessage(message) {
             "version": 1,
             "messageType": "commandRequest"
         }
-    });
+    }));
 }
 
-function subscribeEvent(event) {
-    return JSON.stringify({
+function subscribeEvent(client, event) {
+    client.send(JSON.stringify({
         "body": {
             "eventName": event
         },
         "header": {
-            "requestId": uuid(), // UUID
+            "requestId": uuid(),
             "messagePurpose": "subscribe",
             "version": 1,
             "messageType": "subscribe"
         }
-    });
+    }));
 }
 
 
@@ -77,8 +80,8 @@ wss.on('connection', socket => {
         setCanGenerate(true);
     }
 
-    socket.send(subscribeEvent('WorldFilesListed'));
-    socket.send(subscribeEvent('WorldLoaded'))
+    subscribeEvent(socket, 'WorldFilesListed');
+    subscribeEvent(socket, 'WorldLoaded');
 
     socket.on('message', packet => {
         const res = JSON.parse(packet);
@@ -94,51 +97,47 @@ wss.on('connection', socket => {
 });
 
 function beginGeneration() {
-    console.log(canGenerate)
     if (canGenerate) {
+        $('#start-button').prop('disabled', true);
+        $('#stop-button').prop('disabled', false);
         wss.clients.forEach(client => {
             if (client.readyState == WebSocket.OPEN) {
-                let centerX = parseInt($('#center-x').val());
-                let centerY = parseInt($('#center-y').val());
-                let centerZ = parseInt($('#center-z').val());
-                let sizeX = parseInt($('#dimensions-x').val());
-                let sizeZ = parseInt($('#dimensions-z').val());
-                let sizeSquare = sizeX * sizeZ;
-                let chunksGenerated = 0;
+                const center = {x: parseInt($('#center-x').val()), y: parseInt($('#center-y').val()), z: parseInt($('#center-z').val())}
+                const size = {x: parseInt($('#dimensions-x').val()), z: parseInt($('#dimensions-x').val())}
+                const sizeSquare = size.x * size.z;
+                let chunksGenerated = 1;
                 //Multiplying by 8 because: X - ((Xsize * 16) / 2)
-                let startingPos = {x: centerX - sizeX * 8, y: centerY, z: centerZ - sizeZ * 8}
-                client.send(teleportPlayer(startingPos), err => handleError(err));
-                chunksGenerated++;
-                client.send(sendFormattedMessage({rawtext: [{text: `Generated: ${chunksGenerated}/${sizeSquare}`}]}));
-                currentWindow.setProgressBar(chunksGenerated / sizeSquare);
-                let currentPos = {x: startingPos.x, y: startingPos.y, z: startingPos.z + 16}
+                let startingPos = {x: center.x - size.x * 8, y: center.y, z: center.z - size.z * 8}
+                let currentPos = {x: startingPos.x, y: startingPos.y, z: startingPos.z - 16}
+                sendFormattedMessage(client, {text: 'Generation started!'});
 
-                setInterval(function() {
-                    if (chunksGenerated >= sizeSquare) {
-                        clearInterval();
+                let interval = setInterval(function() {
+                    if (currentPos.z >= center.z + size.z * 8) {
+                        currentPos.x += 16;
+                        currentPos.z = startingPos.z;
+                        teleportPlayer(client, currentPos);
                     }
                     else {
-                        if (currentPos.z >= centerZ + sizeZ * 8) {
-                            currentPos.x += 16;
-                            currentPos.z = startingPos.z;
-                            client.send(teleportPlayer(currentPos));
-                        }
-                        else {
-                            currentPos.z += 16;
-                            client.send(teleportPlayer(currentPos));
-                        }
-                        chunksGenerated++;
-                        client.send(sendFormattedMessage({rawtext: [{text: `Generated: ${chunksGenerated}/${sizeSquare}`}]}));
-                        currentWindow.setProgressBar(chunksGenerated / sizeSquare);
+                        currentPos.z += 16;
+                        teleportPlayer(client, currentPos);
                     }
-                }, 4000);
+                    updateGenProgress(client, chunksGenerated, sizeSquare);
+                    if (chunksGenerated++ >= sizeSquare) {
+                        sendFormattedMessage(client, {text: 'Generation finished!'});
+                        stopGeneration(interval);
+                    }
+                }, intervalSeconds * 1000);
             }
         });
     }
 }
 
-function stopGenerating() {
-    clearInterval();
+function stopGeneration(interval) {
+    clearInterval(interval);
+    updateGenProgress(null, 0, 1);
+    $('#start-button').prop('disabled', false);
+    $('#stop-button').prop('disabled', true);
+    alert('Generation complete!');
 }
 
 
@@ -161,17 +160,33 @@ function handleError(err) {
     }
 }
 
-function calculateDuration() {
+function updateGenProgress(client, generated, max) {
+    currentWindow.setProgressBar(generated / max);
+    if (client) {
+        sendFormattedMessage(client, {text: `Generated: ${generated}/${max}`});
+    }
+}
+
+function updateDuration() {
     let x = $('#dimensions-x').val();
     let z = $('#dimensions-z').val();
 
-    let duration = Math.round(((((x * z) * 4) / 3600) + Number.EPSILON) * 10) / 10;
     $('#duration').text((index, string) => {
-        return durationTemplate.replace('%s', duration)
+        return durationTemplate.replace('%s', calculateGenDuration(x, z))
     });
 }
 
+function calculateGenDuration(x, z) {
+    return Math.round((((x * z * intervalSeconds) / 3600) + Number.EPSILON) * 10) / 10;
+}
+
+function getConnectcommand() {
+    let address = ip.address('public', 'ipv4');
+    return `/connect ${address}:${wss.address().port}`;
+}
+
 server.listen(3000, () => {
-    let address = wss.address()
-    console.log(`Listening on ${address.address}:${address.port}`);
+    $('#command-output').val((index, value) => {
+        return getConnectcommand();
+    });
 });

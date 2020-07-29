@@ -61,12 +61,20 @@ button {
     background-color: #1d7732;
 }
 
+.green-button:disabled {
+    background-color: #10411b;
+}
+
 .red-button {
     background-color: #ca1818;
 }
 
 .red-button:hover {
     background-color: #aa1616;
+}
+
+.red-button:disabled {
+    background-color: #7a1111;
 }
 
 .blue-button {

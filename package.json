@@ -8,7 +8,8 @@
         "url": "https://github.com/GitWither/chunk-generator"
     },
     "scripts": {
-        "start": "electron ."
+        "start": "electron .",
+        "build": "electron-builder"
     },
     "build": {
         "appId": "chunk-generator",
@@ -20,14 +21,12 @@
             }
         ],
         "mac": {
-            "category": "macOS.application",
-            "hardenedRuntime": true,
-            "entitlements": "build/entitlements.mac.plist",
-            "entitlementsInherit": "build/entitlements.mac.plist"
+            "category": "macOS.application"
         },
         "files": [
             "css/",
-            "src",
+            "src/",
+            "build/",
             "index.js",
             "index.html"
         ],
@@ -65,6 +64,7 @@
     },
     "dependencies": {
         "express": "^4.17.1",
+        "ip": "^1.1.5",
         "jquery": "^3.5.1",
         "uuid": "^8.2.0",
         "ws": "^7.3.1"

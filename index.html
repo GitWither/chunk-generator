@@ -9,9 +9,9 @@
 <body>
     <div class="settings" id="address" style="display: flex;">
         <div>
-            <label class="text">It seems like you haven't connected your Minecraft client to this application yet!</br> Run the following command to do so:</label>
+            <label class="text">It looks like you haven't connected your Minecraft client to this application yet!</br> Run the following command to do so:</label>
             <div class="vector">
-                <input class="input" style="width: 25.9rem;" value="sdfasfasdfasdf" type="text" id="command-output" readonly>
+                <input class="input" style="width: 25.9rem;" type="text" id="command-output" readonly>
                 <button class="green-button" onclick="$('#command-output').select();document.execCommand('copy')">Copy</button>
             </div>
         </div>
@@ -34,18 +34,18 @@
         <div class="vector">
             <div class="option">
                 <label class="text">Dimensions X:</label>
-                <input class="input" type="number" id="dimensions-x" oninput="calculateDuration()">
+                <input class="input" type="number" id="dimensions-x" oninput="updateDuration()">
             </div>
             <div class="option">
                 <label class="text">Dimensions Z:</label>
-                <input class="input" type="number" id="dimensions-z" oninput="calculateDuration()">
+                <input class="input" type="number" id="dimensions-z" oninput="updateDuration()">
             </div>
         </div>
         <div>
-            <label class="text" id="duration">This generation will take approximately: 0 hours</label>
+            <label class="text" id="duration">This generation will take approximately: 0 hour(s)</label>
         </div>
-        <button class="green-button option" onclick="beginGeneration()">Begin Generation</button>
-        <button class="red-button option" onclick="beginGeneration()">Stop Generation</button>
+        <button class="green-button option" id="start-button" onclick="beginGeneration()">Begin Generation</button>
+        <button class="red-button option" id="stop-button" disabled onclick="stopGeneration()">Stop Generation</button>
     </div>
     <script src="src/main.js"></script>
 </body>
